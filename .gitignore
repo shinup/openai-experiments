@@ -2,3 +2,5 @@
 .env
 lib/
 venv/lib/
+venv/
+.venv/
