@@ -11,54 +11,57 @@ api_key = os.getenv("OPENAI_API_KEY")
 # Initialize the OpenAI client
 client = OpenAI(api_key=api_key)
 
-# Define md_resume and job_description
+# Define the resume and job description in Markdown
 md_resume = """
-# John Doe
-## Experience
-- Software Engineer at XYZ Corp
-- Developed various applications using Python and JavaScript
+# Jane Doe
+## Professional Experience
+### Senior Software Engineer, Tech Solutions Inc.
+- Led the development of a microservices architecture for a high-traffic web application, improving scalability by 40%.
+- Designed and implemented RESTful APIs in Python and Node.js, integrating third-party services and reducing latency by 30%.
+- Collaborated with cross-functional teams to build a data pipeline using AWS Lambda and S3, automating data processing for real-time analytics.
+
+### Software Engineer, Code Innovators
+- Built a customer-facing dashboard with React.js, reducing page load times by 50% through optimization techniques.
+- Contributed to backend development using Python, Flask, and PostgreSQL for a client management system, increasing performance by 20%.
 """
 
 job_description = """
-We are looking for a Software Engineer with experience in Python and JavaScript. The ideal candidate will have a strong background in developing web applications and working with REST APIs.
+We are seeking a Senior Software Engineer with strong experience in designing scalable systems and working with cloud technologies. The ideal candidate should have expertise in Python, RESTful API development, and frontend frameworks like React.js. Experience with cloud platforms such as AWS is essential, and the candidate should be capable of leading technical teams and driving innovation.
 """
 
-# prompt
+# Craft the prompt for OpenAI API
 prompt = f"""
-I have a resume formatted in Markdown and a job description. \
-Please adapt my resume to better align with the job requirements while \
-maintaining a professional tone. Tailor my skills, experiences, and \
-achievements to highlight the most relevant points for the position. \
-Ensure that my resume still reflects my unique qualifications and strengths \
-but emphasizes the skills and experiences that match the job description.
+I have a resume in Markdown format and a job description. \
+Please update my resume to better match the job description by \
+highlighting relevant skills and achievements. Ensure the resume uses \
+keywords and emphasizes leadership experience and cloud technology proficiency.
 
-### Here is my resume in Markdown:
+### Resume:
 {md_resume}
 
-### Here is the job description:
+### Job Description:
 {job_description}
 
-Please modify the resume to:
-- Use keywords and phrases from the job description.
-- Adjust the bullet points under each role to emphasize relevant skills and achievements.
-- Make sure my experiences are presented in a way that matches the required qualifications.
-- Maintain clarity, conciseness, and professionalism throughout.
+Please update the resume to:
+- Include keywords from the job description.
+- Emphasize leadership experience, cloud expertise (especially AWS), and RESTful API development.
+- Ensure the resume highlights achievements related to the role.
 
 Return the updated resume in Markdown format.
-
 """
-    
-# make api call
+
+# Make the API call
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "system", "content": "You are a professional resume editor."},
         {"role": "user", "content": prompt}
     ], 
     temperature=0.25
 )
-    
-# extract response
-resume = response.choices[0].message.content
 
-print(resume)
+# Extract the tailored resume
+updated_resume = response.choices[0].message.content
+
+# Print the updated resume
+print(updated_resume)
